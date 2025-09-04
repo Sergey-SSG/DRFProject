@@ -7,12 +7,17 @@ from materials.models import Course, Lesson
 class User(AbstractUser):
     username = None
     email = models.EmailField(unique=True, verbose_name="Email")
+    first_name = models.CharField(max_length=30, blank=True, verbose_name="Имя")
+    last_name = models.CharField(max_length=30, blank=True, verbose_name="Фамилия")
     phone = models.CharField(
         max_length=15, blank=True, null=True, verbose_name="Телефон"
     )
     city = models.CharField(max_length=100, blank=True, null=True, verbose_name="Город")
     avatar = models.ImageField(
         upload_to="users/avatars/", blank=True, null=True, verbose_name="Аватарка"
+    )
+    date_joined = models.DateTimeField(
+        auto_now_add=True, verbose_name="Дата регистрации"
     )
 
     USERNAME_FIELD = "email"

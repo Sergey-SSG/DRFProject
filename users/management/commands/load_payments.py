@@ -5,13 +5,11 @@ from users.models import Payment, User
 
 
 class Command(BaseCommand):
-    help = "Load initial payment data"
+    help = "Загрузить данные первоначального платежа"
 
     def handle(self, *args, **options):
         # Создаем тестовые платежи
-        user1 = User.objects.get(
-            email="admin@example.com"
-        )
+        user1 = User.objects.get(email="admin@example.com")
         user2 = User.objects.first()  # Первый пользователь
 
         course1 = Course.objects.first()
@@ -30,4 +28,4 @@ class Command(BaseCommand):
             user=user2, paid_course=course2, amount=15000.00, payment_method="transfer"
         )
 
-        self.stdout.write(self.style.SUCCESS("Successfully loaded payment data"))
+        self.stdout.write(self.style.SUCCESS("Платежные данные успешно загружены"))
