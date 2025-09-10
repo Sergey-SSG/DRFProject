@@ -3,7 +3,7 @@ from rest_framework.routers import DefaultRouter
 
 from .views import (CourseViewSet, LessonCreateAPIView, LessonDestroyAPIView,
                     LessonListAPIView, LessonRetrieveAPIView,
-                    LessonUpdateAPIView)
+                    LessonUpdateAPIView, SubscriptionAPIView)
 
 app_name = "materials"
 
@@ -21,4 +21,5 @@ urlpatterns = [
     path(
         "lessons/<int:pk>/delete/", LessonDestroyAPIView.as_view(), name="lesson-delete"
     ),
+    path("subscriptions/", SubscriptionAPIView.as_view(), name="subscription"),
 ]
