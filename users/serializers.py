@@ -39,8 +39,8 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         return attrs
 
     def create(self, validated_data):
-        validated_data.pop('password2')
-        password = validated_data.pop('password')
+        validated_data.pop("password2")
+        password = validated_data.pop("password")
 
         # Создаем пользователя через модель
         user = User(**validated_data)
