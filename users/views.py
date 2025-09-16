@@ -4,10 +4,15 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 
 from .models import Payment, User
 from .permissions import IsModerator, IsOwner, IsOwnerOrModerator
-from .serializers import (CustomTokenObtainPairSerializer,
-                          PaymentHistorySerializer, PaymentSerializer,
-                          UserProfileSerializer, UserPublicSerializer,
-                          UserRegisterSerializer, UserSerializer)
+from .serializers import (
+    CustomTokenObtainPairSerializer,
+    PaymentHistorySerializer,
+    PaymentSerializer,
+    UserProfileSerializer,
+    UserPublicSerializer,
+    UserRegisterSerializer,
+    UserSerializer,
+)
 
 
 class CustomTokenObtainPairView(TokenObtainPairView):
