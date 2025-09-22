@@ -23,7 +23,11 @@ from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 
-from payments.views import CreatePaymentSessionAPIView, PaymentSuccessAPIView, PaymentCancelAPIView
+from payments.views import (
+    CreatePaymentSessionAPIView,
+    PaymentCancelAPIView,
+    PaymentSuccessAPIView,
+)
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -51,7 +55,13 @@ urlpatterns = [
         name="schema-swagger-ui",
     ),
     path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
-    path('api/payments/create/', CreatePaymentSessionAPIView.as_view(), name='payment-create'),
-    path('api/payments/success/', PaymentSuccessAPIView.as_view(), name='payment-success'),
-    path('api/payments/cancel/', PaymentCancelAPIView.as_view(), name='payment-cancel'),
+    path(
+        "api/payments/create/",
+        CreatePaymentSessionAPIView.as_view(),
+        name="payment-create",
+    ),
+    path(
+        "api/payments/success/", PaymentSuccessAPIView.as_view(), name="payment-success"
+    ),
+    path("api/payments/cancel/", PaymentCancelAPIView.as_view(), name="payment-cancel"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

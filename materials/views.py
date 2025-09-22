@@ -73,7 +73,11 @@ class LessonCreateAPIView(generics.CreateAPIView):
     permission_classes = [permissions.IsAuthenticated, ~IsModerator]
 
     def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
+        lesson = serializer.save(owner=self.request.user)
+        # Отправляем уведомление о новом уроке
+        from materials.tasks import send_lesson_update_notification
+
+        send_lesson_update_notification.delay(lesson.course.id, lesson.title)
 
 
 class LessonUpdateAPIView(generics.UpdateAPIView):
@@ -82,6 +86,13 @@ class LessonUpdateAPIView(generics.UpdateAPIView):
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
     permission_classes = [permissions.IsAuthenticated, IsOwnerOrModerator]
+
+    def perform_update(self, serializer):
+        lesson = serializer.save()
+        # Отправляем уведомление об обновлении урока
+        from materials.tasks import send_lesson_update_notification
+
+        send_lesson_update_notification.delay(lesson.course.id, lesson.title)
 
 
 class LessonDestroyAPIView(generics.DestroyAPIView):

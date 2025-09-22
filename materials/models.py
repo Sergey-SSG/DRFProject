@@ -24,6 +24,16 @@ class Course(models.Model):
     price = models.DecimalField(
         max_digits=10, decimal_places=2, default=0, verbose_name="Цена курса"
     )
+    updated_at = models.DateTimeField(
+        auto_now=True, verbose_name="Дата последнего обновления"
+    )
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        # При сохранении курса отправляем задачу на рассылку уведомлений
+        from materials.tasks import send_course_update_notification
+
+        send_course_update_notification.delay(self.id)
 
     class Meta:
         verbose_name = "Курс"
