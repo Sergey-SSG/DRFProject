@@ -4,15 +4,10 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 
 from .models import Payment, User
 from .permissions import IsModerator, IsOwner, IsOwnerOrModerator
-from .serializers import (
-    CustomTokenObtainPairSerializer,
-    PaymentHistorySerializer,
-    PaymentSerializer,
-    UserProfileSerializer,
-    UserPublicSerializer,
-    UserRegisterSerializer,
-    UserSerializer,
-)
+from .serializers import (CustomTokenObtainPairSerializer,
+                          PaymentHistorySerializer, PaymentSerializer,
+                          UserProfileSerializer, UserPublicSerializer,
+                          UserRegisterSerializer, UserSerializer)
 
 
 class CustomTokenObtainPairView(TokenObtainPairView):
@@ -45,8 +40,13 @@ class UserRetrieveAPIView(generics.RetrieveAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_serializer_class(self):
-        if self.get_object() == self.request.user:
+        if getattr(self, 'swagger_fake_view', False):
+            return UserPublicSerializer
+
+        user_id = self.kwargs.get('pk')
+        if self.request.user.is_authenticated and user_id == str(self.request.user.pk):
             return UserSerializer
+
         return UserPublicSerializer
 
 
@@ -147,8 +147,8 @@ class UserPaymentHistoryAPIView(generics.ListAPIView):
     def get_queryset(self):
         user_id = self.kwargs.get("pk")
         if (
-            self.request.user.id == user_id
-            or self.request.user.groups.filter(name="moderators").exists()
+                self.request.user.id == user_id
+                or self.request.user.groups.filter(name="moderators").exists()
         ):
             return Payment.objects.filter(user_id=user_id)
         return Payment.objects.none()

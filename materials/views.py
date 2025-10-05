@@ -32,9 +32,19 @@ class CourseViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         """Фильтруем курсы: модераторы видят все, обычные пользователи - только свои"""
+        if getattr(self, 'swagger_fake_view', False):
+            return Course.objects.none()
+
         queryset = super().get_queryset()
+
+        # 🧑‍💻 Если пользователь анонимный — возвращаем пустой список
+        if not self.request.user.is_authenticated:
+            return Course.objects.none()
+
+        # 🧩 Если пользователь не модератор — фильтруем по владельцу
         if not self.request.user.groups.filter(name="moderators").exists():
             queryset = queryset.filter(owner=self.request.user)
+
         return queryset
 
 
