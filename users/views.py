@@ -1,5 +1,5 @@
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import filters, generics, permissions, status
+from rest_framework import filters, generics, permissions
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from .models import Payment, User
