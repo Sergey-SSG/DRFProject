@@ -201,3 +201,6 @@ if "test" in sys.argv:
         }
     }
 
+if os.getenv('GITHUB_ACTIONS'):
+    DATABASES['default']['HOST'] = 'localhost'
+    DATABASES['default']['PORT'] = '5432'
