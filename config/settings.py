@@ -200,3 +200,7 @@ if "test" in sys.argv:
             "NAME": BASE_DIR / "test_db.sqlite3",
         }
     }
+
+if os.getenv('GITHUB_ACTIONS'):
+    DATABASES['default']['HOST'] = 'localhost'
+    DATABASES['default']['PORT'] = '5432'
