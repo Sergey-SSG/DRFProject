@@ -204,3 +204,7 @@ if "test" in sys.argv:
 if os.getenv('GITHUB_ACTIONS'):
     DATABASES['default']['HOST'] = 'localhost'
     DATABASES['default']['PORT'] = '5432'
+
+if 'test' in sys.argv:
+    CELERY_TASK_ALWAYS_EAGER = True
+    CELERY_TASK_EAGER_PROPAGATES = True
